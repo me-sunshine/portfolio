@@ -146,5 +146,5 @@ screenshots:
     caption: The audit log for one request.
 links:
   - label: Source code, setup instructions and full test report on GitHub
-    url: https://github.com/me-sunshine/ops-assistant/tree/prototype-build
+    url: https://github.com/me-sunshine/ops-assistant
 ---
