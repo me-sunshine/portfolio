@@ -27,6 +27,13 @@ Every entry has a **Published** switch. Switch it off to hide an entry without d
 
 Content can also be edited directly on GitHub by opening any file under `content/` and choosing the pencil icon. This works even if Pages CMS is unavailable.
 
+## Guides
+
+- [Content editor manual](docs/CMS_USER_MANUAL.md)
+- [Maintenance, backup and recovery](docs/MAINTENANCE.md)
+- [Cost and licensing breakdown](docs/COSTS_AND_LICENCES.md)
+- [Future development roadmap](docs/ROADMAP.md)
+
 ## Repository layout
 
 ```
@@ -42,6 +49,8 @@ content/              all editable content (YAML and Markdown files)
   articles/           one file per article or Lab note
 public/media/         uploaded images and files (photo, CV, screenshots)
 src/                  page templates and styles (rarely needs changing)
+docs/                 guides for editing, maintenance, costs and roadmap
+cv-source/            the CV as an editable page
 .pages.yml            defines the editing screens in Pages CMS
 ```
 
