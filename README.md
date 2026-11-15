@@ -1,5 +1,7 @@
 # Rashmi Singh: professional portfolio
 
+**Live site: <https://rashmi-singh.rashmissingh97.workers.dev>**
+
 The source of my portfolio website. I am a project and programme manager in Berlin, moving into technology project delivery and the practical use of AI and automation in business operations.
 
 The site presents my professional experience, projects, education and certifications, and an AI & Technology Lab with a working AI implementation case study: the [Intelligent Business Operations Assistant](https://github.com/me-sunshine/ops-assistant).
@@ -11,7 +13,7 @@ The site presents my professional experience, projects, education and certificat
 | [Astro](https://astro.build) | Turns the content files into a fast static website | Free, MIT licence |
 | `content/` folder | Holds everything I can edit: profile, experience, projects, case studies, articles | Stored in this repository |
 | [Pages CMS](https://pagescms.org) | Browser editor for the content, signed in with my GitHub account | Free, MIT licence |
-| Cloudflare Pages | Hosts the public website and rebuilds it after every change | Free plan |
+| Cloudflare Workers (static assets) | Hosts the public website and rebuilds it after every change to `main` | Free plan |
 
 No personal information is written into the page code. Every page is generated from the files in `content/` when the site is built, so content can be added, hidden or removed without touching code.
 
