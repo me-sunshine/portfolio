@@ -1,0 +1,9 @@
+// Cloudflare hosting settings. The site is plain static files from the dist folder.
+{
+  "name": "rashmi-singh",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
