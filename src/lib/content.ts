@@ -1,10 +1,17 @@
-import fs from 'node:fs';
 import { parse } from 'yaml';
 import { marked } from 'marked';
 import { getCollection } from 'astro:content';
+// The single-file content is bundled as text at build time, so it loads the same way on any host.
+import siteRaw from '../../content/site.yml?raw';
+import profileRaw from '../../content/profile.yml?raw';
+import skillsRaw from '../../content/skills.yml?raw';
+import certificationsRaw from '../../content/certifications.yml?raw';
 
+const FILES: Record<string, string> = {
+  'site.yml': siteRaw, 'profile.yml': profileRaw, 'skills.yml': skillsRaw, 'certifications.yml': certificationsRaw,
+};
 const read = (file: string) => {
-  try { return parse(fs.readFileSync(`./content/${file}`, 'utf8')) ?? null; } catch { return null; }
+  try { return parse(FILES[file] ?? '') ?? null; } catch { return null; }
 };
 const arr = (v: any) => (Array.isArray(v) ? v.filter(Boolean) : []);
 
