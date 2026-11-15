@@ -10,7 +10,7 @@ outcomes:
   - Recommended a phased transformation that starts with one production line, so results are proven before large investment.
   - Set four architecture principles, led by safety before automation speed. Predictive models may not change safety-critical machine settings on their own, and automated recommendations need validated limits, a documented owner and human approval.
   - Defined a five-phase roadmap, from discovery and baseline measurement, through a pilot and a minimum viable digital twin, to validation against the baseline and enterprise scaling.
-  - Proposed an Architecture Review Board for key decisions, with production, quality and IT represented.
+  - Proposed an Architecture Review Board for key decisions, with production and quality among its members.
   - Tied further investment to verified pilot results such as reduced downtime, improved quality, faster investigations and stronger traceability.
 image: ""
 links: []
