@@ -15,7 +15,7 @@ image: ""
 links:
   - label: Mumbai Ploggers links
     url: https://linktr.ee/mumbaiploggers
-order: 1
+order: 2
 published: true
 ---
 What began as a personal habit became an operation with weekly drives, corporate and college partners, and volunteer leaders running their own chapters. The lesson I took into every later role: a process that other people can run without you is worth more than one you run well yourself.
