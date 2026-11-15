@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import { profile, skills, certifications, education, md, month, period } from '../lib/content';
+import { render } from 'astro:content';
+const edu = await Promise.all((await education()).map(async (e) => ({ e, Content: (await render(e)).Content })));
+---
+<Base title="About" description={`About ${profile.name}: background, skills, education and certifications.`}>
+  <div class="page-head"><h1>About</h1></div>
+  <section class="sec" style="padding-top:0"><div class="prose" set:html={md(profile.about)} /></section>
+  {profile.objectives.length > 0 && (
+    <section class="sec"><h2>What I am looking for</h2><ul class="prose" style="padding-left:22px">{profile.objectives.map((o: string) => <li>{o}</li>)}</ul></section>
+  )}
+  {skills.length > 0 && (
+    <section class="sec" id="skills"><h2>Skills</h2>
+      <div class="cols">{skills.map((s: any) => <div><h3>{s.category}</h3><ul>{s.items.map((i: string) => <li>{i}</li>)}</ul></div>)}</div>
+    </section>
+  )}
+  {edu.length > 0 && (
+    <section class="sec" id="education"><h2>Education</h2>
+      <div class="rows">{edu.map(({ e, Content }) => (
+        <article><h3>{e.data.qualification}</h3>
+          <p class="meta">{[e.data.institution, e.data.location, period(e.data.start, e.data.end)].filter(Boolean).join(' · ')}</p>
+          <div class="prose small" style="margin-top:6px"><Content /></div>
+          {e.data.coursework.length > 0 && <p class="small muted">Relevant coursework: {e.data.coursework.join(', ')}</p>}
+        </article>))}
+      </div>
+    </section>
+  )}
+  {certifications.length > 0 && (
+    <section class="sec" id="certifications"><h2>Certifications</h2>
+      <div class="rows">{certifications.map((c: any) => (
+        <article><h3 style="font-size:17px">{c.credential_url ? <a href={c.credential_url} rel="noopener">{c.name}</a> : c.name}</h3>
+          <p class="meta">{[c.issuer, c.date && month(String(c.date)), c.credential_id && `Credential ID ${c.credential_id}`].filter(Boolean).join(' · ')}</p>
+        </article>))}
+      </div>
+    </section>
+  )}
+  {profile.languages.length > 0 && (
+    <section class="sec"><h2>Languages</h2><p>{profile.languages.map((l: any) => `${l.name} (${l.level})`).join(' · ')}</p></section>
+  )}
+  {profile.awards.length > 0 && (
+    <section class="sec"><h2>Awards</h2>
+      <div class="rows">{profile.awards.map((a: any) => <article><h3 style="font-size:17px">{a.title}{a.year && `, ${a.year}`}</h3><p>{a.detail}</p></article>)}</div>
+    </section>
+  )}
+  {profile.volunteering.length > 0 && (
+    <section class="sec"><h2>Volunteering</h2>
+      <div class="rows">{profile.volunteering.map((v: any) => <article><h3 style="font-size:17px">{v.role}, {v.organisation}</h3><p class="meta">{v.period}</p><p>{v.detail}</p></article>)}</div>
+    </section>
+  )}
+</Base>

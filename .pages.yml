@@ -1,0 +1,276 @@
+# Pages CMS configuration. This file defines what you can edit at https://app.pagescms.org
+# Docs: https://pagescms.org/docs/
+
+media:
+  - name: images
+    label: Images
+    input: public/media/images
+    output: /media/images
+    categories: [image]
+    rename: safe
+  - name: files
+    label: Files (CV, PDFs)
+    input: public/media/files
+    output: /media/files
+    categories: [document]
+    rename: safe
+
+components:
+  published:
+    type: boolean
+    label: Published
+    description: Switch off to hide this entry from the website without deleting it.
+    default: true
+  link_list:
+    type: object
+    label: Links
+    list:
+      collapsible:
+        summary: "{label}"
+    fields:
+      - { name: label, label: Link text, type: string }
+      - { name: url, label: Address (https://...), type: string }
+
+content:
+  # ---------- single files ----------
+  - name: profile
+    label: Profile
+    type: file
+    path: content/profile.yml
+    format: yaml
+    operations: { delete: false }
+    fields:
+      - { name: name, label: Name, type: string, required: true }
+      - { name: role_line, label: Role line, type: string, description: "Shown next to your photo, e.g. Project & Programme Manager · Berlin" }
+      - { name: headline_before, label: Headline (before highlight), type: string, description: "Keep a space at the end." }
+      - { name: headline_highlight, label: Headline (highlighted words), type: string }
+      - { name: headline_after, label: Headline (after highlight), type: string, description: "Start with a space." }
+      - { name: intro, label: Introduction, type: text, description: One or two sentences under the headline. }
+      - name: photo
+        label: Profile photograph
+        type: image
+        options: { media: images }
+      - { name: location, label: Location, type: string }
+      - { name: email, label: Email, type: string }
+      - name: cv
+        label: CV (PDF)
+        type: file
+        description: Upload a new PDF to replace your CV. Leave empty to hide the download link.
+        options: { media: files, extensions: [pdf] }
+      - { name: links, component: link_list, label: Contact and professional links }
+      - name: about
+        label: About section
+        type: rich-text
+        options: { media: false }
+      - { name: objectives, label: Career objectives, type: string, list: true }
+      - name: figures
+        label: Key figures on the home page
+        type: object
+        list:
+          max: 4
+          collapsible:
+            summary: "{value} {label}"
+        fields:
+          - { name: value, label: Figure, type: string }
+          - { name: label, label: What it measures, type: string }
+          - { name: source, label: Where and when, type: string, description: "Role or organisation and years, so the figure has context." }
+      - name: languages
+        label: Languages
+        type: object
+        list: { collapsible: { summary: "{name}" } }
+        fields:
+          - { name: name, label: Language, type: string }
+          - { name: level, label: Level, type: string }
+      - name: awards
+        label: Awards
+        type: object
+        list: { collapsible: { summary: "{title}" } }
+        fields:
+          - { name: title, label: Award, type: string }
+          - { name: year, label: Year, type: string }
+          - { name: detail, label: Detail, type: text }
+      - name: volunteering
+        label: Volunteering
+        type: object
+        list: { collapsible: { summary: "{organisation}" } }
+        fields:
+          - { name: role, label: Role, type: string }
+          - { name: organisation, label: Organisation, type: string }
+          - { name: period, label: Period, type: string }
+          - { name: detail, label: Detail, type: text }
+
+  - name: site
+    label: Site settings
+    type: file
+    path: content/site.yml
+    format: yaml
+    operations: { delete: false }
+    fields:
+      - { name: title, label: Site title, type: string, required: true }
+      - { name: description, label: Description for search engines, type: text }
+      - { name: url, label: Public website address, type: string, description: "e.g. https://your-site.pages.dev. Used for search engines and link previews." }
+      - name: home_sections
+        label: Home page sections (drag to reorder, remove to hide)
+        type: select
+        list: true
+        options:
+          values:
+            - { name: figures, label: Key figures }
+            - { name: featured_case_study, label: Featured AI case study }
+            - { name: experience, label: Experience }
+            - { name: projects, label: Projects }
+            - { name: lab, label: Latest from the AI Lab }
+      - { name: footer_note, label: Footer note, type: string }
+
+  - name: skills
+    label: Skills
+    type: file
+    path: content/skills.yml
+    format: yaml
+    list: true
+    operations: { delete: false }
+    fields:
+      - { name: category, label: Skill category, type: string, required: true }
+      - { name: items, label: Skills, type: string, list: true }
+
+  - name: certifications
+    label: Certifications
+    type: file
+    path: content/certifications.yml
+    format: yaml
+    list: true
+    operations: { delete: false }
+    fields:
+      - { name: name, label: Certification, type: string, required: true }
+      - { name: issuer, label: Issuing organisation, type: string }
+      - { name: date, label: Completion date (YYYY-MM), type: string, pattern: { regex: "^(\\d{4}(-\\d{2})?)?$", message: "Use YYYY-MM, or leave empty" } }
+      - { name: credential_id, label: Credential ID, type: string }
+      - { name: credential_url, label: Credential URL, type: string }
+      - { name: category, label: Skill category, type: string }
+
+  # ---------- collections: one file per entry ----------
+  - name: experience
+    label: Experience
+    type: collection
+    path: content/experience
+    format: yaml-frontmatter
+    filename: "{employer_short}-{title}.md"
+    view:
+      fields: [title, employer_short, start, published]
+      primary: title
+      sort: [start, title]
+      default: { sort: start, order: desc }
+    fields:
+      - { name: title, label: Job title, type: string, required: true }
+      - { name: employer, label: Employer (full name), type: string, required: true }
+      - { name: employer_short, label: Employer (short name), type: string }
+      - { name: industry, label: Industry, type: string }
+      - { name: location, label: Location, type: string }
+      - { name: start, label: Start (YYYY-MM), type: string, required: true, pattern: { regex: "^\\d{4}-\\d{2}$", message: "Use YYYY-MM, e.g. 2024-08" } }
+      - { name: end, label: End (YYYY-MM), type: string, description: Leave empty for a current role., pattern: { regex: "^(\\d{4}-\\d{2})?$", message: "Use YYYY-MM, or leave empty" } }
+      - { name: summary, label: One-line summary, type: text }
+      - { name: achievements, label: Achievements, type: text, list: true }
+      - { name: skills, label: Skills demonstrated, type: string, list: true }
+      - { name: published, component: published }
+      - { name: body, label: Description, type: rich-text, options: { media: false } }
+
+  - name: education
+    label: Education
+    type: collection
+    path: content/education
+    format: yaml-frontmatter
+    filename: "{institution}.md"
+    view: { fields: [qualification, institution, start, published], primary: qualification }
+    fields:
+      - { name: institution, label: Institution, type: string, required: true }
+      - { name: qualification, label: Qualification, type: string, required: true }
+      - { name: location, label: Location, type: string }
+      - { name: start, label: Start (YYYY-MM), type: string, pattern: { regex: "^(\\d{4}-\\d{2})?$", message: "Use YYYY-MM" } }
+      - { name: end, label: End (YYYY-MM), type: string, description: Leave empty if ongoing., pattern: { regex: "^(\\d{4}-\\d{2})?$", message: "Use YYYY-MM, or leave empty" } }
+      - { name: coursework, label: Relevant coursework, type: string, list: true }
+      - { name: published, component: published }
+      - { name: body, label: Description, type: rich-text, options: { media: false } }
+
+  - name: projects
+    label: Projects
+    type: collection
+    path: content/projects
+    format: yaml-frontmatter
+    filename: "{title}.md"
+    view: { fields: [title, order, published], primary: title, sort: [order, title], default: { sort: order, order: asc } }
+    fields:
+      - { name: title, label: Project title, type: string, required: true }
+      - { name: summary, label: Short description, type: text, required: true }
+      - { name: period, label: Period, type: string }
+      - { name: role, label: My role, type: string }
+      - { name: problem, label: Business problem, type: text }
+      - { name: contribution, label: My contribution, type: text }
+      - { name: technologies, label: Technologies and skills, type: string, list: true }
+      - { name: outcomes, label: Outcomes, type: text, list: true }
+      - { name: image, label: Image, type: image, options: { media: images } }
+      - { name: links, component: link_list, label: Project links }
+      - { name: order, label: Order, type: number, description: Lower numbers appear first. }
+      - { name: published, component: published }
+      - { name: body, label: More detail, type: rich-text, options: { media: images } }
+
+  - name: case-studies
+    label: AI case studies
+    type: collection
+    path: content/case-studies
+    format: yaml-frontmatter
+    filename: "{title}.md"
+    view: { fields: [title, featured, published], primary: title }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: Summary, type: text, required: true, description: One or two sentences. Shown on the home page and in lists. }
+      - { name: date, label: Date, type: date }
+      - { name: status_note, label: Status note, type: text, description: "Shown in a box at the top, e.g. that this is an independent portfolio project." }
+      - { name: image, label: Preview image, type: image, options: { media: images } }
+      - { name: image_alt, label: Preview image description, type: string }
+      - { name: featured, label: Feature on the home page, type: boolean }
+      - { name: overview, label: 1. Project overview, type: rich-text, options: { media: images } }
+      - { name: problem, label: 2. Business problem, type: rich-text, options: { media: images } }
+      - { name: why_it_matters, label: 3. Why the problem matters, type: rich-text, options: { media: images } }
+      - { name: solution, label: 4. Proposed AI solution, type: rich-text, options: { media: images } }
+      - { name: requirements, label: 5. Business requirements, type: rich-text, options: { media: images } }
+      - { name: architecture, label: 6. Workflow architecture, type: rich-text, options: { media: images } }
+      - { name: architecture_diagram, label: Architecture diagram, type: image, options: { media: images } }
+      - { name: workflow, label: Workflow steps, type: rich-text, options: { media: images } }
+      - { name: tools, label: 7. Tools and technologies, type: rich-text, options: { media: images } }
+      - { name: methodology, label: 8. Implementation methodology, type: rich-text, options: { media: images } }
+      - { name: oversight, label: 9. Human oversight and risk controls, type: rich-text, options: { media: images } }
+      - { name: testing, label: 10. Testing methodology, type: rich-text, options: { media: images } }
+      - { name: results, label: 11. Results and performance metrics, type: rich-text, options: { media: images } }
+      - { name: lessons, label: 12. Lessons learned, type: rich-text, options: { media: images } }
+      - { name: future, label: 13. Future improvements, type: rich-text, options: { media: images } }
+      - name: screenshots
+        label: Screenshots
+        type: object
+        list: { collapsible: { summary: "{caption}" } }
+        fields:
+          - { name: image, label: Screenshot, type: image, options: { media: images } }
+          - { name: caption, label: Caption, type: string }
+      - { name: links, component: link_list, label: Links (source code, demo) }
+      - { name: order, label: Order, type: number, description: Lower numbers appear first. }
+      - { name: published, component: published }
+      - { name: body, label: Closing notes, type: rich-text, options: { media: images } }
+
+  - name: articles
+    label: Articles and Lab notes
+    type: collection
+    path: content/articles
+    format: yaml-frontmatter
+    filename: "{year}-{month}-{day}-{title}.md"
+    view: { fields: [title, date, published], primary: title, sort: [date, title], default: { sort: date, order: desc } }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: summary, label: Summary, type: text }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: image, label: Image, type: image, options: { media: images } }
+      - { name: published, component: published }
+      - { name: body, label: Content, type: rich-text, options: { media: images } }
+
+settings:
+  content:
+    merge: true

@@ -1,0 +1,60 @@
+- name: Corporate Finance Fundamentals
+  issuer: Corporate Finance Institute (CFI)
+  date: 2026-09
+  credential_id: MC9OE3A4R3QD
+  credential_url: ""
+  category: Business
+- name: Google AI Essentials
+  issuer: Google
+  date: 2025-09
+  credential_id: JH26M2TIXS6N
+  credential_url: ""
+  category: AI and technology
+- name: Strategic Business Analysis Essentials
+  issuer: Project Management Institute
+  date: 2025-09
+  credential_id: ""
+  credential_url: ""
+  category: Project management
+- name: "Project Initiation: Starting a Successful Project"
+  issuer: Google
+  date: 2025-07
+  credential_id: C7YQKM9YBID4
+  credential_url: ""
+  category: Project management
+- name: Foundations of Project Management
+  issuer: Google
+  date: 2025-06
+  credential_id: P3AVS1XP0JJT
+  credential_url: ""
+  category: Project management
+- name: Goethe-Zertifikat B1 (German)
+  issuer: Goethe-Institut
+  date: ""
+  credential_id: ""
+  credential_url: ""
+  category: Languages
+- name: "Creative Thinking: Techniques and Tools for Success"
+  issuer: Imperial College London
+  date: 2020-08
+  credential_id: ""
+  credential_url: ""
+  category: Business
+- name: "Baseline: Data, ML, AI"
+  issuer: Qwiklabs
+  date: ""
+  credential_id: ""
+  credential_url: ""
+  category: AI and technology
+- name: GCP Essentials
+  issuer: Qwiklabs
+  date: ""
+  credential_id: ""
+  credential_url: ""
+  category: AI and technology
+- name: Software Development Fundamentals
+  issuer: Microsoft
+  date: ""
+  credential_id: ""
+  credential_url: ""
+  category: AI and technology

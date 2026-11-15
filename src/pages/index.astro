@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import Roles from '../components/Roles.astro';
+import { site, profile, experience, projects, caseStudies, articles, fullDate } from '../lib/content';
+const roles = await experience();
+const projs = await projects();
+const cases = await caseStudies();
+const notes = await articles();
+const featured = cases.find((c) => c.data.featured) ?? cases[0];
+const sections: Record<string, boolean> = {
+  figures: profile.figures.length > 0, featured_case_study: !!featured, experience: roles.length > 0,
+  projects: projs.length > 0, lab: notes.length > 0,
+};
+const order = site.home_sections.filter((s: string) => sections[s]);
+---
+<Base>
+  <section class="hero">
+    <div class="id">
+      {profile.photo && <img src={profile.photo} alt={`Portrait of ${profile.name}`} width="92" height="92" />}
+      <p><b>{profile.name}</b><span>{profile.role_line}</span></p>
+    </div>
+    <h1>{profile.headline_before}<em>{profile.headline_highlight}</em>{profile.headline_after}</h1>
+    <p class="lede">{profile.intro}</p>
+    <div class="cta">
+      {featured && <a class="btn" href={`/ai-lab/${featured.id}/`}>See the AI case study</a>}
+      {profile.cv && <a class="link" href={profile.cv}>Download CV</a>}
+      {profile.links.slice(0, 1).map((l: any) => <a class="link" href={l.url} rel="me noopener">{l.label}</a>)}
+    </div>
+  </section>
+
+  {order.map((s: string) => (
+    <>
+      {s === 'figures' && (
+        <ul class="facts" aria-label="Key figures">
+          {profile.figures.map((f: any) => <li><b>{f.value}</b><span>{f.label}</span>{f.source && <i>{f.source}</i>}</li>)}
+        </ul>
+      )}
+      {s === 'featured_case_study' && (
+        <section class="sec feature">
+          <h2>Featured AI case study</h2>
+          <div class="feature-grid">
+            <div>
+              <h3><a href={`/ai-lab/${featured.id}/`}>{featured.data.title}</a></h3>
+              <p>{featured.data.summary}</p>
+              <a class="link accent" href={`/ai-lab/${featured.id}/`}>Read the case study</a>
+            </div>
+            {featured.data.image && (
+              <a href={`/ai-lab/${featured.id}/`} tabindex="-1" aria-hidden="true">
+                <img src={featured.data.image} alt="" width="1200" height="640" loading="lazy" />
+              </a>
+            )}
+          </div>
+        </section>
+      )}
+      {s === 'experience' && (
+        <section class="sec">
+          <h2>Experience · select a role for details</h2>
+          <Roles roles={roles.slice(0, 4)} />
+          {roles.length > 4 && <p style="margin-top:14px"><a class="link" href="/work/">All experience</a></p>}
+        </section>
+      )}
+      {s === 'projects' && (
+        <section class="sec">
+          <h2>Projects</h2>
+          <div class="rows">
+            {projs.slice(0, 3).map((p) => (
+              <article><h3><a href={`/work/${p.id}/`}>{p.data.title}</a></h3><p>{p.data.summary}</p></article>
+            ))}
+          </div>
+        </section>
+      )}
+      {s === 'lab' && (
+        <section class="sec">
+          <h2>From the AI Lab</h2>
+          <div class="rows">
+            {notes.slice(0, 2).map((n) => (
+              <article><h3><a href={`/ai-lab/notes/${n.id}/`}>{n.data.title}</a></h3><p>{n.data.summary}</p><p class="meta">{fullDate(n.data.date)}</p></article>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
+  ))}
+</Base>

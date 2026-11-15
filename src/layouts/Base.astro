@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import { site, profile, caseStudies, articles } from '../lib/content';
+interface Props { title?: string; description?: string; noindex?: boolean }
+const { title, description = site.description, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} · ${site.title}` : `${site.title} · ${profile.role_line ?? ''}`.replace(/ · $/, '');
+const path = Astro.url.pathname;
+// A tab only appears when it has something to show, so unpublishing content never leaves a dead link.
+const hasLab = (await caseStudies()).length + (await articles()).length > 0;
+const nav = [
+  { href: '/work/', label: 'Work', show: true },
+  { href: '/ai-lab/', label: 'AI Lab', show: hasLab },
+  { href: '/about/', label: 'About', show: true },
+].filter((n) => n.show);
+const canonical = site.url ? new URL(path, site.url).href : undefined;
+const ogImage = site.url && profile.photo ? new URL(profile.photo, site.url).href : undefined;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="site-head">
+      <div class="wrap">
+        <a class="brand" href="/">{profile.name}</a>
+        <nav aria-label="Main">
+          <ul>
+            {nav.map((n) => <li><a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a></li>)}
+            <li><a class="contact" href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="wrap"><slot /></main>
+    <div class="wrap">
+      <section class="contact-block" id="contact" aria-labelledby="contact-h">
+        <h2 id="contact-h">Get in touch</h2>
+        <p class="muted">{profile.location ? `Based in ${profile.location}. ` : ''}Open to project, programme and AI implementation roles.</p>
+        <ul>
+          {profile.email && <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>}
+          {profile.links.map((l: any) => <li><a href={l.url} rel="me noopener">{l.label}</a></li>)}
+          {profile.cv && <li><a href={profile.cv}>Download CV</a></li>}
+        </ul>
+      </section>
+    </div>
+    <footer class="site-foot">
+      <div class="wrap"><span>© {new Date().getFullYear()} {profile.name}</span><span>{site.footer_note}</span></div>
+    </footer>
+  </body>
+</html>

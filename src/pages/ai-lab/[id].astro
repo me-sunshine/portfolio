@@ -1,0 +1,54 @@
+---
+// Case study template. Every case study uses the same thirteen sections; a section with no text is left out.
+import Base from '../../layouts/Base.astro';
+import { caseStudies, md, fullDate } from '../../lib/content';
+import { render } from 'astro:content';
+export async function getStaticPaths() {
+  return (await caseStudies()).map((c) => ({ params: { id: c.id }, props: { c } }));
+}
+const { c } = Astro.props;
+const d = c.data;
+const { Content } = await render(c);
+const sections = [
+  ['overview', 'Project overview'], ['problem', 'Business problem'], ['why_it_matters', 'Why the problem matters'],
+  ['solution', 'Proposed AI solution'], ['requirements', 'Business requirements'], ['architecture', 'Workflow architecture'],
+  ['tools', 'Tools and technologies'], ['methodology', 'Implementation methodology'],
+  ['oversight', 'Human oversight and risk controls'], ['testing', 'Testing methodology'],
+  ['results', 'Results and performance metrics'], ['lessons', 'Lessons learned'], ['future', 'Future improvements'],
+].filter(([k]) => (d as any)[k] || (k === 'architecture' && (d.architecture_diagram || d.workflow)));
+---
+<Base title={d.title} description={d.summary}>
+  <article class="cs">
+    <div class="page-head">
+      <p class="meta"><a href="/ai-lab/">AI Lab</a> · Case study{d.date && ` · ${fullDate(d.date)}`}</p>
+      <h1>{d.title}</h1>
+      <p>{d.summary}</p>
+    </div>
+    {d.image && <img class="cs-hero" src={d.image} alt={d.image_alt} width="1200" height="640" />}
+    {d.status_note && <p class="notice">{d.status_note}</p>}
+    <nav aria-label="Sections" style="padding-block:24px">
+      <ol class="cs-nav">{sections.map(([k, label]) => <li><a href={`#${k}`}>{label}</a></li>)}</ol>
+    </nav>
+    {sections.map(([k, label]) => (
+      <section id={k}>
+        <h2>{label}</h2>
+        <div class="prose" set:html={md((d as any)[k])} />
+        {k === 'architecture' && d.architecture_diagram && (
+          <figure class="diagram" style="margin-top:18px"><img src={d.architecture_diagram} alt="Workflow architecture diagram. The steps are described in the text of this section." loading="lazy" /></figure>
+        )}
+        {k === 'architecture' && d.workflow && <div class="prose" style="margin-top:14px" set:html={md(d.workflow)} />}
+      </section>
+    ))}
+    {d.screenshots.length > 0 && (
+      <section id="screenshots">
+        <h2>Screenshots of the prototype</h2>
+        <div class="shots">
+          {d.screenshots.map((s: any) => <figure><img src={s.image} alt={s.caption} loading="lazy" /><figcaption>{s.caption}</figcaption></figure>)}
+        </div>
+      </section>
+    )}
+    <section><div class="prose"><Content /></div>
+      {d.links.length > 0 && <ul style="padding-left:20px;margin-top:10px">{d.links.map((l: any) => <li><a href={l.url} rel="noopener">{l.label || l.url}</a></li>)}</ul>}
+    </section>
+  </article>
+</Base>

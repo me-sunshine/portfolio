@@ -1,0 +1,10 @@
+title: Rashmi Singh
+description: Project and programme manager in Berlin, applying AI and automation to business operations.
+url: ""
+home_sections:
+  - figures
+  - featured_case_study
+  - experience
+  - projects
+  - lab
+footer_note: Built with Astro. Content managed with Pages CMS.

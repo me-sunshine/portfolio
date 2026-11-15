@@ -1,0 +1,21 @@
+---
+import { period } from '../lib/content';
+import { render } from 'astro:content';
+const { roles, openFirst = true } = Astro.props;
+const rendered = await Promise.all(roles.map(async (r: any) => ({ r, Content: (await render(r)).Content })));
+---
+{rendered.map(({ r, Content }, i) => (
+  <details class="role" open={openFirst && i === 0}>
+    <summary>
+      <b>{r.data.title}, {r.data.employer_short || r.data.employer}</b>
+      <time>{period(r.data.start, r.data.end)}</time>
+      {r.data.summary && <span>{r.data.summary}</span>}
+    </summary>
+    <div class="body">
+      <p class="small">{[r.data.employer, r.data.industry, r.data.location].filter(Boolean).join(' · ')}</p>
+      <Content />
+      {r.data.achievements.length > 0 && <ul>{r.data.achievements.map((a: string) => <li>{a}</li>)}</ul>}
+      {r.data.skills.length > 0 && <ul class="tags" aria-label="Skills demonstrated">{r.data.skills.map((s: string) => <li>{s}</li>)}</ul>}
+    </div>
+  </details>
+))}

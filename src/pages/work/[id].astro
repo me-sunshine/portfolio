@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import { projects } from '../../lib/content';
+import { render } from 'astro:content';
+export async function getStaticPaths() {
+  return (await projects()).map((p) => ({ params: { id: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+const d = p.data;
+const { Content } = await render(p);
+---
+<Base title={d.title} description={d.summary}>
+  <div class="page-head">
+    <p class="meta"><a href="/work/#projects">Projects</a>{d.role && ` · ${d.role}`}{d.period && ` · ${d.period}`}</p>
+    <h1>{d.title}</h1>
+    <p>{d.summary}</p>
+  </div>
+  <div class="prose" style="padding-bottom:48px">
+    {d.image && <img src={d.image} alt="" />}
+    {d.problem && <><h2>The problem</h2><p>{d.problem}</p></>}
+    {d.contribution && <><h2>My contribution</h2><p>{d.contribution}</p></>}
+    {d.outcomes.length > 0 && <><h2>Outcomes</h2><ul>{d.outcomes.map((o: string) => <li>{o}</li>)}</ul></>}
+    <Content />
+    {d.technologies.length > 0 && <><h2>Skills and tools</h2><ul class="tags">{d.technologies.map((t: string) => <li>{t}</li>)}</ul></>}
+    {d.links.length > 0 && <><h2>Links</h2><ul>{d.links.map((l: any) => <li><a href={l.url} rel="noopener">{l.label || l.url}</a></li>)}</ul></>}
+  </div>
+</Base>

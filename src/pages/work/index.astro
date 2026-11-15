@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import Roles from '../../components/Roles.astro';
+import { experience, projects } from '../../lib/content';
+const roles = await experience();
+const projs = await projects();
+---
+<Base title="Work" description="Professional experience and projects.">
+  <div class="page-head">
+    <h1>Work</h1>
+    <p>Professional experience, most recent first, followed by projects I have founded or built.</p>
+  </div>
+  {roles.length > 0 && (
+    <section class="sec" id="experience"><h2>Professional experience</h2><Roles roles={roles} /></section>
+  )}
+  {projs.length > 0 && (
+    <section class="sec" id="projects">
+      <h2>Projects</h2>
+      <div class="rows">
+        {projs.map((p) => (
+          <article>
+            <h3><a href={`/work/${p.id}/`}>{p.data.title}</a></h3>
+            <p>{p.data.summary}</p>
+            <p class="meta">{[p.data.role, p.data.period].filter(Boolean).join(' · ')}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+</Base>

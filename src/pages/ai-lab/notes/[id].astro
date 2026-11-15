@@ -1,0 +1,22 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { articles, fullDate } from '../../../lib/content';
+import { render } from 'astro:content';
+export async function getStaticPaths() {
+  return (await articles()).map((a) => ({ params: { id: a.id }, props: { a } }));
+}
+const { a } = Astro.props;
+const { Content } = await render(a);
+---
+<Base title={a.data.title} description={a.data.summary}>
+  <div class="page-head">
+    <p class="meta"><a href="/ai-lab/">AI Lab</a> · {fullDate(a.data.date)}</p>
+    <h1>{a.data.title}</h1>
+    {a.data.summary && <p>{a.data.summary}</p>}
+  </div>
+  <div class="prose" style="padding-bottom:48px">
+    {a.data.image && <img src={a.data.image} alt="" />}
+    <Content />
+    {a.data.tags.length > 0 && <ul class="tags">{a.data.tags.map((t: string) => <li>{t}</li>)}</ul>}
+  </div>
+</Base>

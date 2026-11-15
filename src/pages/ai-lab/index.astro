@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { caseStudies, articles, fullDate } from '../../lib/content';
+const cases = await caseStudies();
+const notes = await articles();
+---
+<Base title="AI Lab" description="AI implementation case studies, experiments and notes.">
+  <div class="page-head">
+    <h1>AI &amp; Technology Lab</h1>
+    <p>Working prototypes, case studies and notes on applying AI and automation to business operations.</p>
+  </div>
+  {cases.length > 0 && (
+    <section class="sec">
+      <h2>Case studies</h2>
+      <div class="rows">
+        {cases.map((c) => (
+          <article>{c.data.image && <a href={`/ai-lab/${c.id}/`} tabindex="-1" aria-hidden="true"><img class="thumb" src={c.data.image} alt="" width="1200" height="640" loading="lazy" /></a>}
+          <h3><a href={`/ai-lab/${c.id}/`}>{c.data.title}</a></h3><p>{c.data.summary}</p>
+          {c.data.status_note && <p class="meta">{c.data.status_note}</p>}</article>
+        ))}
+      </div>
+    </section>
+  )}
+  {notes.length > 0 && (
+    <section class="sec">
+      <h2>Notes and experiments</h2>
+      <div class="rows">
+        {notes.map((n) => (
+          <article><h3><a href={`/ai-lab/notes/${n.id}/`}>{n.data.title}</a></h3><p>{n.data.summary}</p>
+          <p class="meta">{fullDate(n.data.date)}{n.data.tags.length > 0 && ` · ${n.data.tags.join(', ')}`}</p></article>
+        ))}
+      </div>
+    </section>
+  )}
+  {cases.length + notes.length === 0 && <p class="muted" style="padding-bottom:48px">Nothing published here yet.</p>}
+</Base>
