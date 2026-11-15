@@ -4,10 +4,8 @@ date: 2026-11-15
 summary: What I learned by reading the licence files before picking an automation tool and a language model.
 tags: [AI adoption, Licensing, n8n, Ollama]
 image: ""
-published: false
+published: true
 ---
-This is a draft. Edit it in your own words, then switch on "Published".
-
 When I planned the Operations Assistant case study, the budget was zero. That turned tool selection into a licensing question as much as a technical one.
 
 - **n8n** is free to self-host, but its Sustainable Use License is not an open-source licence.
