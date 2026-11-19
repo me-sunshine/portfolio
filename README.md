@@ -33,7 +33,6 @@ Content can also be edited directly on GitHub by opening any file under `content
 - [Maintenance, backup and recovery](docs/MAINTENANCE.md)
 - [Cost and licensing breakdown](docs/COSTS_AND_LICENCES.md)
 - [Future development roadmap](docs/ROADMAP.md)
-- [Pitch deck: Why hire me](pitch-deck/README.md)
 
 ## Repository layout
 
@@ -52,7 +51,6 @@ public/media/         uploaded images and files (photo, CV, screenshots)
 src/                  page templates and styles (rarely needs changing)
 docs/                 guides for editing, maintenance, costs and roadmap
 cv-source/            the CV as an editable page
-pitch-deck/           the personal pitch deck: slides and documentation
 .pages.yml            defines the editing screens in Pages CMS
 ```
 
