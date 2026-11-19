@@ -42,7 +42,11 @@ const order = site.home_sections.filter((s: string) => sections[s]);
             <div>
               <h3><a href={`/ai-lab/${featured.id}/`}>{featured.data.title}</a></h3>
               <p>{featured.data.summary}</p>
-              <a class="link accent" href={`/ai-lab/${featured.id}/`}>Read the case study</a>
+              <p class="cta" style="margin-top:4px">
+                <a class="link accent" href={`/ai-lab/${featured.id}/`}>Read the case study</a>
+                {featured.data.demo_video && <a class="link" href={`/ai-lab/${featured.id}/#demo`}>Watch it working</a>}
+                {featured.data.prototype_url && <a class="link" href={featured.data.prototype_url} rel="noopener">Get the code</a>}
+              </p>
             </div>
             {featured.data.image && (
               <a href={`/ai-lab/${featured.id}/`} tabindex="-1" aria-hidden="true">

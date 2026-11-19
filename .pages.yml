@@ -8,6 +8,12 @@ media:
     output: /media/images
     categories: [image]
     rename: safe
+  - name: videos
+    label: Videos
+    input: public/media/video
+    output: /media/video
+    categories: [video]
+    rename: safe
   - name: files
     label: Files (CV, PDFs)
     input: public/media/files
@@ -227,6 +233,11 @@ content:
       - { name: status_note, label: Status note, type: text, description: "Shown in a box at the top, e.g. that this is an independent portfolio project." }
       - { name: image, label: Preview image, type: image, options: { media: images } }
       - { name: image_alt, label: Preview image description, type: string }
+      - { name: prototype_url, label: Link to the working prototype or its code, type: string, description: "e.g. the GitHub repository or a live demo address. Shown as a button at the top." }
+      - { name: prototype_label, label: Text for that link, type: string }
+      - { name: demo_video, label: Walkthrough video (MP4), type: file, options: { media: videos, extensions: [mp4] } }
+      - { name: demo_poster, label: Video cover image, type: image, options: { media: images } }
+      - { name: demo_caption, label: Video caption, type: text }
       - { name: featured, label: Feature on the home page, type: boolean }
       - { name: overview, label: 1. Project overview, type: rich-text, options: { media: images } }
       - { name: problem, label: 2. Business problem, type: rich-text, options: { media: images } }

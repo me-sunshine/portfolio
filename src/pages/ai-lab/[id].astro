@@ -25,7 +25,23 @@ const sections = [
       <p>{d.summary}</p>
     </div>
     {d.image && <img class="cs-hero" src={d.image} alt={d.image_alt} width="1200" height="640" />}
+    {(d.demo_video || d.prototype_url) && (
+      <div class="cta" style="margin:0 0 28px">
+        {d.demo_video && <a class="btn" href="#demo">Watch the prototype working</a>}
+        {d.prototype_url && <a class="link" href={d.prototype_url} rel="noopener">{d.prototype_label || 'View the prototype'}</a>}
+      </div>
+    )}
     {d.status_note && <p class="notice">{d.status_note}</p>}
+    {d.demo_video && (
+      <section id="demo" style="border-top:0;padding-top:28px">
+        <h2>See it working</h2>
+        <video class="demo" controls preload="none" playsinline poster={d.demo_poster || undefined} width="1280" height="720">
+          <source src={d.demo_video} type="video/mp4" />
+          <a href={d.demo_video}>Download the walkthrough video</a>
+        </video>
+        {d.demo_caption && <p class="small muted" style="margin-top:10px;max-width:66ch">{d.demo_caption}</p>}
+      </section>
+    )}
     <nav aria-label="Sections" style="padding-block:24px">
       <ol class="cs-nav">{sections.map(([k, label]) => <li><a href={`#${k}`}>{label}</a></li>)}</ol>
     </nav>

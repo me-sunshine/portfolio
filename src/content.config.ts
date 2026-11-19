@@ -36,7 +36,8 @@ export const collections = {
   caseStudies: defineCollection({
     loader: md('case-studies'),
     schema: z.object({
-      title: text, summary: text, date: text, status_note: text, image: text, image_alt: text, featured: z.preprocess((v) => v === true, z.boolean()),
+      title: text, summary: text, date: text, status_note: text, image: text, image_alt: text,
+      prototype_url: text, prototype_label: text, demo_video: text, demo_poster: text, demo_caption: text, featured: z.preprocess((v) => v === true, z.boolean()),
       overview: text, problem: text, why_it_matters: text, solution: text, requirements: text, architecture: text,
       architecture_diagram: text, workflow: text, tools: text, methodology: text, oversight: text, testing: text,
       results: text, lessons: text, future: text,

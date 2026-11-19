@@ -5,6 +5,11 @@ date: 2026-11-15
 status_note: Independent portfolio project. This prototype was built to demonstrate how I approach an AI implementation. It is not a commercial product and was not built for a client. All project data in it is synthetic.
 image: /media/images/ops-assistant-preview.svg
 image_alt: "Three steps: a project request, an AI draft with items labelled stated or AI suggestion, and human approval. Caption: the AI drafts, a person decides."
+prototype_url: https://github.com/me-sunshine/ops-assistant
+prototype_label: Get the prototype on GitHub
+demo_video: /media/video/ops-assistant-walkthrough.mp4
+demo_poster: /media/images/ops-assistant-walkthrough-poster.jpg
+demo_caption: "A 48-second recording of the real prototype, using the synthetic test data: a reviewer edits an AI-suggested task owner, rejects a wrong AI flag, and the result appears in the confirmed record and the audit log. No sound."
 featured: true
 order: 1
 published: true
@@ -147,4 +152,6 @@ screenshots:
 links:
   - label: Source code, setup instructions and full test report on GitHub
     url: https://github.com/me-sunshine/ops-assistant
+  - label: Test and performance report
+    url: https://github.com/me-sunshine/ops-assistant/blob/main/docs/TEST_REPORT.md
 ---
